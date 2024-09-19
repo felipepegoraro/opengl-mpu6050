@@ -1,0 +1,26 @@
+#!/bin/bash
+
+SRC="./main.cpp"
+FLAGS="-lglfw -lGLEW -lGL -lm -lX11 -lpthread -lXrandr -lXi -ldl"
+
+check_library(){
+    local lib=$1
+    if ! ldconfig -p | grep -q "$lib"; then
+        echo "erro: lib $lib não encontrada"
+        exit 1
+    fi
+}
+
+check_library "libglfw"
+check_library "libGLEW"
+check_library "libGL"
+
+g++ "$SRC" $FLAGS
+
+if [ $? -eq 0 ]; then
+    echo "compilacao finalizada"
+else
+    echo "erro na compilacao"
+    exit 1
+fi
+
